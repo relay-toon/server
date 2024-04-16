@@ -5,3 +5,9 @@ export interface KakaoRequest extends Request {
     kakaoId: string;
   };
 }
+
+export interface NaverRequest extends Request {
+  user: {
+    naverId: string;
+  };
+}
