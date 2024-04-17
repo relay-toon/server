@@ -1,7 +1,14 @@
-import { Controller, Get, UseGuards, Req, Res } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  UseGuards,
+  Req,
+  Res,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Response } from 'express';
 import { KakaoAuthGuard, NaverAuthGuard } from './guards';
-import { KakaoRequest, NaverRequest } from './requests';
+import { KakaoRequest, NaverRequest, JwtRequest } from './requests';
 import { AuthService } from './auth.service';
 import { ConfigService } from '@nestjs/config';
 import {
@@ -60,5 +67,32 @@ export class AuthController {
     res.cookie('refreshToken', refreshToken, this.cookieOptions);
     res.cookie('isLoggedIn', true, { ...this.cookieOptions, httpOnly: false });
     return res.redirect(this.configService.get('CLIENT_URL')!);
+  }
+
+  @ApiOperation({ summary: 'accessToken 재발급' })
+  @ApiResponse({
+    status: 200,
+    description: 'accessToken 재발급',
+    headers: {
+      'Set-Cookie': {
+        description: 'accessToken',
+      },
+    },
+  })
+  @ApiUnauthorizedResponse({ description: 'unauthorized - jwt 토큰 인증 실패' })
+  @Get('refresh')
+  async refresh(@Req() req: JwtRequest, @Res() res: Response) {
+    try {
+      const newAccessToken = await this.authService.refresh(
+        req.cookies.refreshToken,
+      );
+      res.cookie('accessToken', newAccessToken, this.cookieOptions);
+      return res.send();
+    } catch (err) {
+      res.clearCookie('accessToken', this.cookieOptions);
+      res.clearCookie('refreshToken', this.cookieOptions);
+      res.clearCookie('isLoggedIn', { ...this.cookieOptions, httpOnly: false });
+      throw new UnauthorizedException();
+    }
   }
 }
