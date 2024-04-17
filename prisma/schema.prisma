@@ -13,4 +13,32 @@ model User {
   provider     String
   providerId   String
   refreshToken String?
+
+  toons   Toon[]
+  history Participant[]
+}
+
+model Toon {
+  id        String  @id @default(uuid())
+  title     String
+  ownerId   String
+  headCount Int
+  timer     Int?
+  image     String?
+  completed Boolean @default(false)
+  isDrawing Boolean @default(false)
+
+  owner        User          @relation(fields: [ownerId], references: [id])
+  participants Participant[]
+}
+
+model Participant {
+  toonId String
+  userId String?
+  name   String
+
+  toon Toon  @relation(fields: [toonId], references: [id])
+  user User? @relation(fields: [userId], references: [id])
+
+  @@id([toonId, name])
 }
