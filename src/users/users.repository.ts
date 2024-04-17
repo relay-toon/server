@@ -12,7 +12,6 @@ export class UsersRepository {
       data,
       select: {
         id: true,
-        name: true,
       },
     });
   }
@@ -21,6 +20,17 @@ export class UsersRepository {
     return this.prisma.user.findFirst({
       where: {
         ...info,
+      },
+    });
+  }
+
+  async setRefreshToken(userId: string, refreshToken: string) {
+    return this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        refreshToken,
       },
     });
   }
