@@ -8,10 +8,11 @@ import {
   HttpCode,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { KakaoAuthGuard, NaverAuthGuard } from './guards';
+import { KakaoAuthGuard, NaverAuthGuard, GoogleAuthGuard } from './guards';
 import {
   KakaoRequest,
   NaverRequest,
+  GoogleRequest,
   JwtRequest,
   DefaultRequest,
 } from './requests';
@@ -68,6 +69,19 @@ export class AuthController {
     const { accessToken, refreshToken } = await this.authService.login({
       provider: 'naver',
       providerId: req.user.naverId,
+    });
+    res.cookie('accessToken', accessToken, this.cookieOptions);
+    res.cookie('refreshToken', refreshToken, this.cookieOptions);
+    res.cookie('isLoggedIn', true, { ...this.cookieOptions, httpOnly: false });
+    return res.redirect(this.configService.get('CLIENT_URL')!);
+  }
+
+  @Get('google')
+  @UseGuards(GoogleAuthGuard)
+  async googleLogin(@Req() req: GoogleRequest, @Res() res: Response) {
+    const { accessToken, refreshToken } = await this.authService.login({
+      provider: 'google',
+      providerId: req.user.googleId,
     });
     res.cookie('accessToken', accessToken, this.cookieOptions);
     res.cookie('refreshToken', refreshToken, this.cookieOptions);

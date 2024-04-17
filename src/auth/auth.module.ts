@@ -2,7 +2,12 @@ import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UsersModule } from 'src/users/users.module';
-import { KakaoStrategy, NaverStrategy, JwtStrategy } from './strategies';
+import {
+  KakaoStrategy,
+  NaverStrategy,
+  GoogleStrategy,
+  JwtStrategy,
+} from './strategies';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -21,6 +26,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, KakaoStrategy, NaverStrategy, JwtStrategy],
+  providers: [
+    AuthService,
+    KakaoStrategy,
+    NaverStrategy,
+    GoogleStrategy,
+    JwtStrategy,
+  ],
 })
 export class AuthModule {}

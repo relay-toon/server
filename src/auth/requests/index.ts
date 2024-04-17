@@ -11,6 +11,11 @@ export interface NaverRequest extends Request {
     naverId: string;
   };
 }
+export interface GoogleRequest extends Request {
+  user: {
+    googleId: string;
+  };
+}
 
 export interface JwtRequest extends Request {
   user: {
