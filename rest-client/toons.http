@@ -8,6 +8,5 @@ Content-Type: application/json
 
 {
   "title": "title1",
-  "headCount": 2,
-  "timer": 12
+  "headCount": 2
 }

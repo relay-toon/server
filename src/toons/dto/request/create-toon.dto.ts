@@ -1,4 +1,4 @@
-import { MinLength, MaxLength, Max, IsInt } from 'class-validator';
+import { MinLength, MaxLength, Max, IsInt, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateToonDto {
@@ -11,7 +11,8 @@ export class CreateToonDto {
   @Max(6)
   headCount: number;
 
-  @ApiProperty({ example: 3, description: '단위: 초' })
+  @ApiProperty({ example: 3, description: '단위: 초', required: false })
+  @IsOptional()
   @IsInt()
-  timer: number;
+  timer?: number;
 }
