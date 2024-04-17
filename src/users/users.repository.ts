@@ -24,7 +24,7 @@ export class UsersRepository {
     });
   }
 
-  async setRefreshToken(userId: string, refreshToken: string) {
+  async setRefreshToken(userId: string, refreshToken: string | null) {
     return this.prisma.user.update({
       where: {
         id: userId,

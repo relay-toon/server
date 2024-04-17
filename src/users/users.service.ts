@@ -14,7 +14,7 @@ export class UsersService {
     return this.usersRepository.createUser({ ...info });
   }
 
-  async setRefreshToken(userId: string, refreshToken: string) {
+  async setRefreshToken(userId: string, refreshToken: string | null) {
     return this.usersRepository.setRefreshToken(userId, refreshToken);
   }
 

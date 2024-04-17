@@ -17,3 +17,5 @@ export interface JwtRequest extends Request {
     userId: string;
   };
 }
+
+export interface DefaultRequest extends Request {}

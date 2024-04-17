@@ -77,4 +77,21 @@ export class AuthService {
       throw new Error('Unauthorized');
     }
   }
+
+  async logout(refreshToken: string | undefined | null) {
+    try {
+      if (!refreshToken) {
+        return;
+      }
+
+      const decodedRefreshToken = this.jwtService.verify(refreshToken, {
+        secret: this.configService.get('JWT_REFRESH_SECRET'),
+      });
+      const userId = decodedRefreshToken.userId;
+
+      this.usersService.setRefreshToken(userId, null);
+    } catch (err) {
+      return;
+    }
+  }
 }

@@ -5,10 +5,16 @@ import {
   Req,
   Res,
   UnauthorizedException,
+  HttpCode,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { KakaoAuthGuard, NaverAuthGuard } from './guards';
-import { KakaoRequest, NaverRequest, JwtRequest } from './requests';
+import {
+  KakaoRequest,
+  NaverRequest,
+  JwtRequest,
+  DefaultRequest,
+} from './requests';
 import { AuthService } from './auth.service';
 import { ConfigService } from '@nestjs/config';
 import {
@@ -94,5 +100,21 @@ export class AuthController {
       res.clearCookie('isLoggedIn', { ...this.cookieOptions, httpOnly: false });
       throw new UnauthorizedException();
     }
+  }
+
+  @ApiOperation({ summary: '로그아웃' })
+  @ApiResponse({
+    status: 204,
+    description: '로그아웃 성공, 쿠키 삭제',
+  })
+  @ApiUnauthorizedResponse({ description: 'unauthorized - jwt 토큰 인증 실패' })
+  @Get('logout')
+  @HttpCode(204)
+  async logout(@Req() req: DefaultRequest, @Res() res: Response) {
+    res.clearCookie('accessToken', this.cookieOptions);
+    res.clearCookie('refreshToken', this.cookieOptions);
+    res.clearCookie('isLoggedIn', { ...this.cookieOptions, httpOnly: false });
+    this.authService.logout(req.cookies.refreshToken);
+    return res.send();
   }
 }
