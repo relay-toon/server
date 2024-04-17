@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
+import { ProviderInfo } from './types';
 
 @Injectable()
 export class UsersRepository {
@@ -12,6 +13,14 @@ export class UsersRepository {
       select: {
         id: true,
         name: true,
+      },
+    });
+  }
+
+  async getUserByProvider(info: ProviderInfo) {
+    return this.prisma.user.findFirst({
+      where: {
+        ...info,
       },
     });
   }

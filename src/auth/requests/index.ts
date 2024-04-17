@@ -11,3 +11,9 @@ export interface NaverRequest extends Request {
     naverId: string;
   };
 }
+
+export interface JwtRequest extends Request {
+  user: {
+    userId: string;
+  };
+}
