@@ -18,4 +18,19 @@ export class ToonsRepository {
       },
     });
   }
+
+  async getToon(toonId: string) {
+    return this.prisma.toon.findUnique({
+      where: {
+        id: toonId,
+      },
+      include: {
+        participants: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+  }
 }

@@ -1,6 +1,5 @@
 @endpoint = http://localhost:8000
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0MGQ5MWVlYy1mNDdmLTQ5YjktOTQxYy1hNThhZWVjNTRkNTMiLCJpYXQiOjE3MTMzNjI5NDksImV4cCI6MTcxMzk2Nzc0OX0.RcWMc_N5TvYlkZsL0JDg6Ybc7gTMlJtzuQgFG1PZ52U
-
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxNmVlNjc1MS0zZDFiLTRmNDAtOTkwMC04MjJlNTYyNzUyNWIiLCJpYXQiOjE3MTM0NDQ0NTIsImV4cCI6MTcxNDA0OTI1Mn0.uwu0ytOG2fL_GfTMYvagWkVaMPpghTDOre-vsaAnNFc
 ### 툰 생성
 POST {{endpoint}}/toons
 Cookie: accessToken={{accessToken}}
@@ -10,3 +9,7 @@ Content-Type: application/json
   "title": "title1",
   "headCount": 2
 }
+
+### 툰 정보 조회
+GET {{endpoint}}/toons/b33f60f1-ad8b-4067-869d-c12f5b295860
+

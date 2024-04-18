@@ -1,9 +1,17 @@
-import { Controller, Post, Body, Req, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Req,
+  UseGuards,
+  Get,
+  Param,
+} from '@nestjs/common';
 import { ToonsService } from './toons.service';
 import { JwtRequest } from 'src/auth/requests';
 import { JwtAuthGuard } from 'src/auth/guards';
 import { CreateToonDto } from './dto/request';
-import { ToonDto } from './dto/response';
+import { ToonDto, ToonWithParticipantsDto } from './dto/response';
 import {
   ApiTags,
   ApiCookieAuth,
@@ -25,5 +33,12 @@ export class ToonsController {
   @UseGuards(JwtAuthGuard)
   async createToon(@Req() req: JwtRequest, @Body() data: CreateToonDto) {
     return this.toonsService.createToon(req.user.userId, data);
+  }
+
+  @ApiOperation({ summary: '툰 조회' })
+  @ApiResponse({ status: 200, type: ToonWithParticipantsDto })
+  @Get(':toonId')
+  async getToon(@Param('toonId') toonId: string) {
+    return this.toonsService.getToon(toonId);
   }
 }

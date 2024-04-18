@@ -11,4 +11,8 @@ export class ToonsService {
   ) {
     return this.toonsRepository.createToon(userId, data);
   }
+
+  async getToon(toonId: string) {
+    return this.toonsRepository.getToon(toonId);
+  }
 }
