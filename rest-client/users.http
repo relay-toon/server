@@ -5,3 +5,11 @@
 GET {{endpoint}}/users/me
 Cookie: accessToken={{accessToken}}
 
+### 유저 이름 변경
+PUT {{endpoint}}/users/me
+Cookie: accessToken={{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "마포 반고흐"
+}

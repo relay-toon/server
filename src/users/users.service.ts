@@ -25,4 +25,8 @@ export class UsersService {
   async getUserById(userId: string) {
     return this.usersRepository.getUserById(userId);
   }
+
+  async updateUserName(userId: string, name: string) {
+    return this.usersRepository.updateUserName(userId, name);
+  }
 }

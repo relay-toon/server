@@ -1,13 +1,23 @@
-import { Controller, Patch, Get, UseGuards, Req } from '@nestjs/common';
+import {
+  Controller,
+  Put,
+  Get,
+  UseGuards,
+  Req,
+  Body,
+  HttpCode,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from 'src/auth/guards';
 import { JwtRequest } from 'src/auth/requests';
+import { NameDto } from './dto/request';
 import { MyInfoDto } from './dto/response';
 import {
   ApiCookieAuth,
   ApiTags,
   ApiOperation,
   ApiResponse,
+  ApiBody,
 } from '@nestjs/swagger';
 
 @ApiTags('users')
@@ -22,5 +32,16 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   async getMe(@Req() req: JwtRequest) {
     return this.usersService.getUserById(req.user.userId);
+  }
+
+  @ApiOperation({ summary: '내 이름 수정' })
+  @ApiCookieAuth('accessToken')
+  @ApiBody({ type: NameDto })
+  @ApiResponse({ status: 201 })
+  @Put('me')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(201)
+  async updateUserName(@Req() req: JwtRequest, @Body('name') name: string) {
+    return this.usersService.updateUserName(req.user.userId, name);
   }
 }

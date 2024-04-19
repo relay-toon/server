@@ -56,4 +56,19 @@ export class UsersRepository {
       },
     });
   }
+
+  async updateUserName(userId: string, name: string) {
+    return this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        name,
+      },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+  }
 }
