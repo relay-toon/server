@@ -21,4 +21,8 @@ export class UsersService {
   async getRefreshToken(userId: string) {
     return this.usersRepository.getRefreshToken(userId);
   }
+
+  async getUserById(userId: string) {
+    return this.usersRepository.getUserById(userId);
+  }
 }

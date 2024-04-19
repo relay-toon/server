@@ -13,3 +13,5 @@ Content-Type: application/json
 ### 툰 정보 조회
 GET {{endpoint}}/toons/b33f60f1-ad8b-4067-869d-c12f5b295860
 
+### 툰 락 획득
+GET {{endpoint}}/toons/b33f60f1-ad8b-4067-869d-c12f5b295860/lock
