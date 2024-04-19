@@ -13,3 +13,7 @@ Content-Type: application/json
 {
   "name": "마포 반고흐"
 }
+
+### 회원 탈퇴
+DELETE {{endpoint}}/users/me
+Cookie: accessToken={{accessToken}}

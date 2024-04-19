@@ -29,4 +29,8 @@ export class UsersService {
   async updateUserName(userId: string, name: string) {
     return this.usersRepository.updateUserName(userId, name);
   }
+
+  async deleteUser(userId: string) {
+    return this.usersRepository.deleteUser(userId);
+  }
 }

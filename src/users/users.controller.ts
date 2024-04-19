@@ -6,6 +6,7 @@ import {
   Req,
   Body,
   HttpCode,
+  Delete,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from 'src/auth/guards';
@@ -43,5 +44,15 @@ export class UsersController {
   @HttpCode(201)
   async updateUserName(@Req() req: JwtRequest, @Body('name') name: string) {
     return this.usersService.updateUserName(req.user.userId, name);
+  }
+
+  @ApiOperation({ summary: '회원 탈퇴' })
+  @ApiCookieAuth('accessToken')
+  @ApiResponse({ status: 204 })
+  @Delete('me')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(204)
+  async deleteUser(@Req() req: JwtRequest) {
+    return this.usersService.deleteUser(req.user.userId);
   }
 }
