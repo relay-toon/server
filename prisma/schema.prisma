@@ -44,3 +44,9 @@ model Participant {
 
   @@id([toonId, name])
 }
+
+model Suggestion {
+  id      Int    @id @default(autoincrement())
+  title   String
+  content String
+}
