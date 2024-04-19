@@ -7,7 +7,10 @@ import {
   Body,
   HttpCode,
   Delete,
+  Res,
 } from '@nestjs/common';
+import { Response } from 'express';
+import { ConfigService } from '@nestjs/config';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from 'src/auth/guards';
 import { JwtRequest } from 'src/auth/requests';
@@ -24,7 +27,10 @@ import {
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly configService: ConfigService,
+  ) {}
 
   @ApiOperation({ summary: '내 정보 조회' })
   @ApiCookieAuth('accessToken')
@@ -52,7 +58,19 @@ export class UsersController {
   @Delete('me')
   @UseGuards(JwtAuthGuard)
   @HttpCode(204)
-  async deleteUser(@Req() req: JwtRequest) {
-    return this.usersService.deleteUser(req.user.userId);
+  async deleteUser(
+    @Req() req: JwtRequest,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const cookieOptions = {
+      httpOnly: true,
+      secure: true,
+      domain: this.configService.get('COOKIE_DOMAIN'),
+    };
+    res.clearCookie('accessToken', cookieOptions);
+    res.clearCookie('refreshToken', cookieOptions);
+    res.clearCookie('isLoggedIn', { ...cookieOptions, httpOnly: false });
+    await this.usersService.deleteUser(req.user.userId);
+    return;
   }
 }

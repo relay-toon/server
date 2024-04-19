@@ -101,7 +101,10 @@ export class AuthController {
   })
   @ApiUnauthorizedResponse({ description: 'unauthorized - jwt 토큰 인증 실패' })
   @Get('refresh')
-  async refresh(@Req() req: JwtRequest, @Res() res: Response) {
+  async refresh(
+    @Req() req: JwtRequest,
+    @Res({ passthrough: true }) res: Response,
+  ) {
     try {
       const newAccessToken = await this.authService.refresh(
         req.cookies.refreshToken,
@@ -124,7 +127,10 @@ export class AuthController {
   @ApiUnauthorizedResponse({ description: 'unauthorized - jwt 토큰 인증 실패' })
   @Get('logout')
   @HttpCode(204)
-  async logout(@Req() req: DefaultRequest, @Res() res: Response) {
+  async logout(
+    @Req() req: DefaultRequest,
+    @Res({ passthrough: true }) res: Response,
+  ) {
     res.clearCookie('accessToken', this.cookieOptions);
     res.clearCookie('refreshToken', this.cookieOptions);
     res.clearCookie('isLoggedIn', { ...this.cookieOptions, httpOnly: false });
