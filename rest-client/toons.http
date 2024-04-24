@@ -1,5 +1,7 @@
 @endpoint = http://localhost:8000
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxNmVlNjc1MS0zZDFiLTRmNDAtOTkwMC04MjJlNTYyNzUyNWIiLCJpYXQiOjE3MTM0NDQ0NTIsImV4cCI6MTcxNDA0OTI1Mn0.uwu0ytOG2fL_GfTMYvagWkVaMPpghTDOre-vsaAnNFc
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyYzViMmEwOS0xN2UwLTRlODEtOWI1ZS1jY2M3MmFkYThmNzEiLCJpYXQiOjE3MTM5NzMwNDIsImV4cCI6MTcxNDU3Nzg0Mn0.n7IxjxsCFgU6Ol5MW5aDh8Loz0affz4kG2a6RDfzE0g
+
+
 ### 툰 생성
 POST {{endpoint}}/toons
 Cookie: accessToken={{accessToken}}
@@ -7,11 +9,12 @@ Content-Type: application/json
 
 {
   "title": "title1",
-  "headCount": 2
+  "headCount": 2,
+  "timer": 12
 }
 
 ### 툰 정보 조회
-GET {{endpoint}}/toons/b33f60f1-ad8b-4067-869d-c12f5b295860
+GET {{endpoint}}/toons/b0350f1f-eeba-4ad3-bedc-0ad06e4042ed
 
 ### 툰 락 획득
-GET {{endpoint}}/toons/b33f60f1-ad8b-4067-869d-c12f5b295860/lock
+GET {{endpoint}}/toons/5e407e9b-bb09-4b28-ab92-4fa2494f7271/lock

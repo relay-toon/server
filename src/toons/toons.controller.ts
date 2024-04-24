@@ -6,6 +6,7 @@ import {
   UseGuards,
   Get,
   Param,
+  HttpException,
 } from '@nestjs/common';
 import { ToonsService } from './toons.service';
 import { JwtRequest } from 'src/auth/requests';
@@ -40,5 +41,23 @@ export class ToonsController {
   @Get(':toonId')
   async getToon(@Param('toonId') toonId: string) {
     return this.toonsService.getToon(toonId);
+  }
+
+  @ApiOperation({ summary: '락 획득' })
+  @ApiResponse({ status: 200, type: String, description: 'lockId' })
+  @ApiResponse({ status: 409, description: 'Already locked' })
+  @Get(':toonId/lock')
+  async lockToon(@Param('toonId') toonId: string) {
+    try {
+      return await this.toonsService.lockToon(toonId);
+    } catch (e) {
+      if (!(e instanceof Error)) {
+        throw new HttpException('Internal Server Error', 500);
+      } else {
+        if (e.message === 'Already locked') {
+          throw new HttpException('Already locked', 409);
+        }
+      }
+    }
   }
 }

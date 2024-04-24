@@ -27,7 +27,7 @@ model Toon {
   timer     Int?
   image     String?
   completed Boolean  @default(false)
-  isDrawing Boolean  @default(false)
+  lockId    String?
   createdAt DateTime @default(now())
 
   owner        User          @relation(fields: [ownerId], references: [id])

@@ -9,10 +9,28 @@ export class ToonsService {
     userId: string,
     data: { title: string; headCount: number; timer?: number },
   ) {
-    return this.toonsRepository.createToon(userId, data);
+    return this.toonsRepository.createToon(userId, {
+      ...data,
+    });
   }
 
   async getToon(toonId: string) {
-    return this.toonsRepository.getToon(toonId);
+    return this.toonsRepository.getToonWithParticipants(toonId);
+  }
+
+  async lockToon(toonId: string) {
+    const toon = await this.toonsRepository.lockToon(toonId);
+
+    setTimeout(
+      async () => {
+        const currentToon = await this.toonsRepository.getToon(toonId);
+        if (currentToon!.lockId === toon.lockId) {
+          await this.toonsRepository.unlockToon(toonId);
+        }
+      },
+      toon.timer ? 1000 * 60 * 5 : 1000 * 60 * 30,
+    );
+
+    return toon.lockId;
   }
 }

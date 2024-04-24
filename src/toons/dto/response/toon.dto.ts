@@ -22,8 +22,11 @@ export class ToonDto {
   @ApiProperty({ example: false })
   completed: boolean;
 
-  @ApiProperty({ example: false })
-  isDrawing: boolean;
+  @ApiProperty({
+    example: '40d91eec-f47f-49b9-941c-a58aeec54d53',
+    nullable: true,
+  })
+  lockId: string | null;
 
   @ApiProperty({ example: '2024-04-17T14:55:19.430Z' })
   createdAt: Date;
