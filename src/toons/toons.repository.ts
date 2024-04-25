@@ -159,6 +159,9 @@ export class ToonsRepository {
           },
         },
         completed,
+        ownerId: {
+          not: userId,
+        },
       },
       orderBy: {
         createdAt: 'desc',
