@@ -30,7 +30,7 @@ model Toon {
   lockId    String?
   createdAt DateTime @default(now())
 
-  owner        User          @relation(fields: [ownerId], references: [id])
+  owner        User          @relation(fields: [ownerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   participants Participant[]
 }
 
@@ -39,8 +39,8 @@ model Participant {
   userId String?
   name   String
 
-  toon Toon  @relation(fields: [toonId], references: [id])
-  user User? @relation(fields: [userId], references: [id])
+  toon Toon  @relation(fields: [toonId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  user User? @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: SetNull)
 
   @@id([toonId, name])
 }

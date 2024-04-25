@@ -13,7 +13,7 @@ export class ToonDto {
   @ApiProperty({ example: 4 })
   headCount: number;
 
-  @ApiProperty({ example: 3, nullable: true })
+  @ApiProperty({ example: 12, nullable: true })
   timer: number | null;
 
   @ApiProperty({ example: 'https://example.com/image.png', nullable: true })

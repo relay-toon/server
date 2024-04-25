@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { ToonsModule } from './toons/toons.module';
 import { SuggestionModule } from './suggestion/suggestion.module';
+import { AwsModule } from './aws/aws.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { SuggestionModule } from './suggestion/suggestion.module';
     AuthModule,
     ToonsModule,
     SuggestionModule,
+    AwsModule,
   ],
 })
 export class AppModule {}

@@ -7,11 +7,16 @@ import {
   Get,
   Param,
   HttpException,
+  Put,
+  UseInterceptors,
+  UploadedFile,
+  HttpCode,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ToonsService } from './toons.service';
 import { JwtRequest } from 'src/auth/requests';
 import { JwtAuthGuard } from 'src/auth/guards';
-import { CreateToonDto } from './dto/request';
+import { CreateToonDto, DrawToonDto } from './dto/request';
 import { ToonDto, ToonWithParticipantsDto } from './dto/response';
 import {
   ApiTags,
@@ -19,6 +24,7 @@ import {
   ApiOperation,
   ApiBody,
   ApiResponse,
+  ApiConsumes,
 } from '@nestjs/swagger';
 
 @ApiTags('Toons')
@@ -44,8 +50,13 @@ export class ToonsController {
   }
 
   @ApiOperation({ summary: '락 획득' })
-  @ApiResponse({ status: 200, type: String, description: 'lockId' })
-  @ApiResponse({ status: 409, description: 'Already locked' })
+  @ApiResponse({
+    status: 200,
+    description: 'lockId',
+    type: ToonWithParticipantsDto,
+  })
+  @ApiResponse({ status: 423, description: 'Already locked' })
+  @ApiResponse({ status: 409, description: 'Already completed' })
   @Get(':toonId/lock')
   async lockToon(@Param('toonId') toonId: string) {
     try {
@@ -55,9 +66,30 @@ export class ToonsController {
         throw new HttpException('Internal Server Error', 500);
       } else {
         if (e.message === 'Already locked') {
-          throw new HttpException('Already locked', 409);
+          throw new HttpException('Already locked', 423);
+        } else if (e.message === 'Already completed') {
+          throw new HttpException('Already completed', 409);
         }
       }
     }
+  }
+
+  @ApiOperation({ summary: '툰 그리기' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ type: DrawToonDto })
+  @ApiResponse({
+    status: 201,
+    description: 'created',
+    type: ToonWithParticipantsDto,
+  })
+  @Put(':toonId')
+  @HttpCode(201)
+  @UseInterceptors(FileInterceptor('image'))
+  async drawToon(
+    @Param('toonId') toonId: string,
+    @Body() drawToonDto: DrawToonDto,
+    @UploadedFile() image: Express.Multer.File,
+  ) {
+    return this.toonsService.drawToon(toonId, drawToonDto, image);
   }
 }

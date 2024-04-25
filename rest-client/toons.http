@@ -18,3 +18,11 @@ GET {{endpoint}}/toons/b0350f1f-eeba-4ad3-bedc-0ad06e4042ed
 
 ### 툰 락 획득
 GET {{endpoint}}/toons/5e407e9b-bb09-4b28-ab92-4fa2494f7271/lock
+
+### 툰 그리기
+PUT {{endpoint}}/toons/5e407e9b-bb09-4b28-ab92-4fa2494f7271
+Content-Type: application/json
+
+{
+  "name": "name1",
+}

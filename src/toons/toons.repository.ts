@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { v4 as uuidv4 } from 'uuid';
+import type { DrawToonDto } from './dto/request';
 
 @Injectable()
 export class ToonsRepository {
@@ -56,12 +57,23 @@ export class ToonsRepository {
           throw new Error('Already locked');
         }
 
+        if (toon!.completed) {
+          throw new Error('Already completed');
+        }
+
         return tx.toon.update({
           where: {
             id: toonId,
           },
           data: {
             lockId: uuidv4(),
+          },
+          include: {
+            participants: {
+              select: {
+                name: true,
+              },
+            },
           },
         });
       },
@@ -80,5 +92,49 @@ export class ToonsRepository {
         lockId: null,
       },
     });
+  }
+
+  async drawToon(toonId: string, drawToonDto: DrawToonDto, image: string) {
+    const toon = await this.prisma.toon.update({
+      where: {
+        id: toonId,
+      },
+      data: {
+        image,
+        lockId: null,
+        participants: {
+          create: {
+            name: drawToonDto.name,
+            userId: drawToonDto.userId,
+          },
+        },
+      },
+      include: {
+        participants: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+    if (toon.headCount === toon.participants.length) {
+      return this.prisma.toon.update({
+        where: {
+          id: toonId,
+        },
+        data: {
+          completed: true,
+        },
+        include: {
+          participants: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      });
+    } else {
+      return toon;
+    }
   }
 }
