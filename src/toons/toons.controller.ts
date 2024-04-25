@@ -88,6 +88,7 @@ export class ToonsController {
   }
 
   @ApiOperation({ summary: '내 툰 리스트 조회' })
+  @ApiCookieAuth('accessToken')
   @ApiResponse({ status: 200, type: [ToonDto] })
   @Get('owned')
   @UseGuards(JwtAuthGuard)
@@ -99,6 +100,7 @@ export class ToonsController {
   }
 
   @ApiOperation({ summary: '참여한 툰 리스트 조회' })
+  @ApiCookieAuth('accessToken')
   @ApiResponse({ status: 200, type: [ToonDto] })
   @Get('participated')
   @UseGuards(JwtAuthGuard)
