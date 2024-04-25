@@ -51,4 +51,12 @@ export class ToonsService {
     const imageUrl = `${this.configService.get('AWS_S3_URL')}/toons/${toonId}.png`;
     return this.toonsRepository.drawToon(toonId, drawToonDto, imageUrl);
   }
+
+  async getOwnedToons(userId: string, completed: boolean) {
+    return this.toonsRepository.getOwnedToons(userId, completed);
+  }
+
+  async getParticipatedToons(userId: string, completed: boolean) {
+    return this.toonsRepository.getParticipatedToons(userId, completed);
+  }
 }

@@ -137,4 +137,32 @@ export class ToonsRepository {
       return toon;
     }
   }
+
+  async getOwnedToons(userId: string, completed: boolean) {
+    return this.prisma.toon.findMany({
+      where: {
+        ownerId: userId,
+        completed,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
+
+  async getParticipatedToons(userId: string, completed: boolean) {
+    return this.prisma.toon.findMany({
+      where: {
+        participants: {
+          some: {
+            userId,
+          },
+        },
+        completed,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
 }

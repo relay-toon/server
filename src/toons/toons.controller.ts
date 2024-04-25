@@ -11,6 +11,7 @@ import {
   UseInterceptors,
   UploadedFile,
   HttpCode,
+  Query,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ToonsService } from './toons.service';
@@ -27,7 +28,7 @@ import {
   ApiConsumes,
 } from '@nestjs/swagger';
 
-@ApiTags('Toons')
+@ApiTags('toons')
 @Controller('toons')
 export class ToonsController {
   constructor(private readonly toonsService: ToonsService) {}
@@ -40,13 +41,6 @@ export class ToonsController {
   @UseGuards(JwtAuthGuard)
   async createToon(@Req() req: JwtRequest, @Body() data: CreateToonDto) {
     return this.toonsService.createToon(req.user.userId, data);
-  }
-
-  @ApiOperation({ summary: '툰 조회' })
-  @ApiResponse({ status: 200, type: ToonWithParticipantsDto })
-  @Get(':toonId')
-  async getToon(@Param('toonId') toonId: string) {
-    return this.toonsService.getToon(toonId);
   }
 
   @ApiOperation({ summary: '락 획득' })
@@ -91,5 +85,34 @@ export class ToonsController {
     @UploadedFile() image: Express.Multer.File,
   ) {
     return this.toonsService.drawToon(toonId, drawToonDto, image);
+  }
+
+  @ApiOperation({ summary: '내 툰 리스트 조회' })
+  @ApiResponse({ status: 200, type: [ToonDto] })
+  @Get('owned')
+  @UseGuards(JwtAuthGuard)
+  async getOwnedToons(
+    @Req() req: JwtRequest,
+    @Query('completed') completed: boolean,
+  ) {
+    return this.toonsService.getOwnedToons(req.user.userId, completed);
+  }
+
+  @ApiOperation({ summary: '참여한 툰 리스트 조회' })
+  @ApiResponse({ status: 200, type: [ToonDto] })
+  @Get('participated')
+  @UseGuards(JwtAuthGuard)
+  async getParticipatedToons(
+    @Req() req: JwtRequest,
+    @Query('completed') completed: boolean,
+  ) {
+    return this.toonsService.getParticipatedToons(req.user.userId, completed);
+  }
+
+  @ApiOperation({ summary: '툰 조회' })
+  @ApiResponse({ status: 200, type: ToonWithParticipantsDto })
+  @Get(':toonId')
+  async getToon(@Param('toonId') toonId: string) {
+    return this.toonsService.getToon(toonId);
   }
 }

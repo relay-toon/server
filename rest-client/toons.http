@@ -1,5 +1,5 @@
 @endpoint = http://localhost:8000
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyYzViMmEwOS0xN2UwLTRlODEtOWI1ZS1jY2M3MmFkYThmNzEiLCJpYXQiOjE3MTM5NzMwNDIsImV4cCI6MTcxNDU3Nzg0Mn0.n7IxjxsCFgU6Ol5MW5aDh8Loz0affz4kG2a6RDfzE0g
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlNDliZTczNy0yYzkwLTRkNmYtYTk5ZC1mMWI4YWI3MjVlNzMiLCJpYXQiOjE3MTQwNTQzOTksImV4cCI6MTcxNDY1OTE5OX0.VqY0wz1dTl_SqDK1WErECKIzQvHZqdmy9ssKQQfkom0
 
 
 ### 툰 생성
@@ -8,7 +8,7 @@ Cookie: accessToken={{accessToken}}
 Content-Type: application/json
 
 {
-  "title": "title1",
+  "title": "카카오계정이 만든 그림",
   "headCount": 2,
   "timer": 12
 }
@@ -26,3 +26,11 @@ Content-Type: application/json
 {
   "name": "name1",
 }
+
+### 내가 만든 툰 리스트 조회
+GET {{endpoint}}/toons/owned?completed=true
+Cookie: accessToken={{accessToken}}
+
+### 참여한 툰 리스트 조회
+GET {{endpoint}}/toons/participated?completed=true
+Cookie: accessToken={{accessToken}}
