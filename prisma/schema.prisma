@@ -47,6 +47,5 @@ model Participant {
 
 model Suggestion {
   id      Int    @id @default(autoincrement())
-  title   String
   content String
 }

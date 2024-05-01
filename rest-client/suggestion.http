@@ -1,11 +1,11 @@
 @endpoint = http://localhost:8000
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxNmVlNjc1MS0zZDFiLTRmNDAtOTkwMC04MjJlNTYyNzUyNWIiLCJpYXQiOjE3MTM0NDQ0NTIsImV4cCI6MTcxNDA0OTI1Mn0.uwu0ytOG2fL_GfTMYvagWkVaMPpghTDOre-vsaAnNFc
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwYzYwODc4Ni01MzFjLTQxNzYtOWJlZS04ODlkMGRkMzUwNGYiLCJpYXQiOjE3MTQ1NDUyNTMsImV4cCI6MTcxNTE1MDA1M30._wAG3retzFbvxbdfKKpZmliyXmHeI_0q6MA7hXcrckY
+
 
 ### 건의 하기
 POST {{endpoint}}/suggestion
 Content-Type: application/json
 
 {
-  "title": "title1",
   "content": "sdjfklsdjfklsdjfklsdjlfk sdklfjdklsjfl"
 }

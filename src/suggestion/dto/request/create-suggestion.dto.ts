@@ -4,9 +4,5 @@ import { IsString } from 'class-validator';
 export class CreateSuggestionDto {
   @ApiProperty()
   @IsString()
-  title: string;
-
-  @ApiProperty()
-  @IsString()
   content: string;
 }
