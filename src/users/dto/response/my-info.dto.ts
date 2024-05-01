@@ -6,4 +6,7 @@ export class MyInfoDto {
 
   @ApiProperty({ example: '마포 반고흐', nullable: true })
   name: string | null;
+
+  @ApiProperty({ example: 'kakao' })
+  provider: string;
 }

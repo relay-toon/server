@@ -1,5 +1,6 @@
 @endpoint = http://localhost:8000
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlYzc3MTBkZS1mZmQ3LTQ0NTctYTliNy02ZTE1YWIzMDhkOGIiLCJpYXQiOjE3MTM1Mjc4MzgsImV4cCI6MTcxNDEzMjYzOH0.nsl1oCPLJ6ShYUis32eYJXUG7ghGXkUE5tKxYqir7Qk
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwYzYwODc4Ni01MzFjLTQxNzYtOWJlZS04ODlkMGRkMzUwNGYiLCJpYXQiOjE3MTQ1NDUyNTMsImV4cCI6MTcxNTE1MDA1M30._wAG3retzFbvxbdfKKpZmliyXmHeI_0q6MA7hXcrckY
+
 
 ### 유저 정보 조회
 GET {{endpoint}}/users/me
