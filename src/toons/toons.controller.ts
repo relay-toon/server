@@ -18,7 +18,7 @@ import { ToonsService } from './toons.service';
 import { JwtRequest } from 'src/auth/requests';
 import { JwtAuthGuard } from 'src/auth/guards';
 import { CreateToonDto, DrawToonDto } from './dto/request';
-import { ToonDto, ToonWithParticipantsDto } from './dto/response';
+import { ToonDto, ToonWithParticipantsDto, ToonsDto } from './dto/response';
 import {
   ApiTags,
   ApiCookieAuth,
@@ -89,26 +89,32 @@ export class ToonsController {
 
   @ApiOperation({ summary: '내 툰 리스트 조회' })
   @ApiCookieAuth('accessToken')
-  @ApiResponse({ status: 200, type: [ToonDto] })
+  @ApiResponse({ status: 200, type: ToonsDto })
   @Get('owned')
   @UseGuards(JwtAuthGuard)
   async getOwnedToons(
     @Req() req: JwtRequest,
     @Query('completed') completed: boolean,
+    @Query('page') page: number,
   ) {
-    return this.toonsService.getOwnedToons(req.user.userId, completed);
+    return this.toonsService.getOwnedToons(req.user.userId, completed, page);
   }
 
   @ApiOperation({ summary: '참여한 툰 리스트 조회' })
   @ApiCookieAuth('accessToken')
-  @ApiResponse({ status: 200, type: [ToonDto] })
+  @ApiResponse({ status: 200, type: ToonsDto })
   @Get('participated')
   @UseGuards(JwtAuthGuard)
   async getParticipatedToons(
     @Req() req: JwtRequest,
     @Query('completed') completed: boolean,
+    @Query('page') page: number,
   ) {
-    return this.toonsService.getParticipatedToons(req.user.userId, completed);
+    return this.toonsService.getParticipatedToons(
+      req.user.userId,
+      completed,
+      page,
+    );
   }
 
   @ApiOperation({ summary: '툰 조회' })

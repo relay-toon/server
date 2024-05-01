@@ -138,8 +138,14 @@ export class ToonsRepository {
     }
   }
 
-  async getOwnedToons(userId: string, completed: boolean) {
-    return this.prisma.toon.findMany({
+  async getOwnedToonsWithCount(userId: string, completed: boolean) {
+    const count = await this.prisma.toon.count({
+      where: {
+        ownerId: userId,
+        completed,
+      },
+    });
+    const toons = await this.prisma.toon.findMany({
       where: {
         ownerId: userId,
         completed,
@@ -147,11 +153,45 @@ export class ToonsRepository {
       orderBy: {
         createdAt: 'desc',
       },
+      take: 5,
     });
+    return {
+      totalPage: Math.ceil(count / 5),
+      toons,
+    };
   }
 
-  async getParticipatedToons(userId: string, completed: boolean) {
-    return this.prisma.toon.findMany({
+  async getOwnedToons(userId: string, completed: boolean, page: number) {
+    return {
+      toons: await this.prisma.toon.findMany({
+        where: {
+          ownerId: userId,
+          completed,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+        skip: (page - 1) * 5,
+        take: 5,
+      }),
+    };
+  }
+
+  async getParticipatedToonsWithCount(userId: string, completed: boolean) {
+    const count = await this.prisma.toon.count({
+      where: {
+        participants: {
+          some: {
+            userId,
+          },
+        },
+        completed,
+        ownerId: {
+          not: userId,
+        },
+      },
+    });
+    const toons = await this.prisma.toon.findMany({
       where: {
         participants: {
           some: {
@@ -166,6 +206,34 @@ export class ToonsRepository {
       orderBy: {
         createdAt: 'desc',
       },
+      take: 5,
     });
+    return {
+      totalPage: Math.ceil(count / 5),
+      toons,
+    };
+  }
+
+  async getParticipatedToons(userId: string, completed: boolean, page: number) {
+    return {
+      toons: await this.prisma.toon.findMany({
+        where: {
+          participants: {
+            some: {
+              userId,
+            },
+          },
+          completed,
+          ownerId: {
+            not: userId,
+          },
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+        skip: (page - 1) * 5,
+        take: 5,
+      }),
+    };
   }
 }

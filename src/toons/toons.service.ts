@@ -52,11 +52,22 @@ export class ToonsService {
     return this.toonsRepository.drawToon(toonId, drawToonDto, imageUrl);
   }
 
-  async getOwnedToons(userId: string, completed: boolean) {
-    return this.toonsRepository.getOwnedToons(userId, completed);
+  async getOwnedToons(userId: string, completed: boolean, page: number) {
+    if (page === 1) {
+      return this.toonsRepository.getOwnedToonsWithCount(userId, completed);
+    } else {
+      return this.toonsRepository.getOwnedToons(userId, completed, page);
+    }
   }
 
-  async getParticipatedToons(userId: string, completed: boolean) {
-    return this.toonsRepository.getParticipatedToons(userId, completed);
+  async getParticipatedToons(userId: string, completed: boolean, page: number) {
+    if (page === 1) {
+      return this.toonsRepository.getParticipatedToonsWithCount(
+        userId,
+        completed,
+      );
+    } else {
+      return this.toonsRepository.getParticipatedToons(userId, completed, page);
+    }
   }
 }

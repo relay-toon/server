@@ -1,5 +1,5 @@
 @endpoint = http://localhost:8000
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlNDliZTczNy0yYzkwLTRkNmYtYTk5ZC1mMWI4YWI3MjVlNzMiLCJpYXQiOjE3MTQwNTQzOTksImV4cCI6MTcxNDY1OTE5OX0.VqY0wz1dTl_SqDK1WErECKIzQvHZqdmy9ssKQQfkom0
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwYzYwODc4Ni01MzFjLTQxNzYtOWJlZS04ODlkMGRkMzUwNGYiLCJpYXQiOjE3MTQ1NDUyNTMsImV4cCI6MTcxNTE1MDA1M30._wAG3retzFbvxbdfKKpZmliyXmHeI_0q6MA7hXcrckY
 
 
 ### 툰 생성
@@ -28,7 +28,7 @@ Content-Type: application/json
 }
 
 ### 내가 만든 툰 리스트 조회
-GET {{endpoint}}/toons/owned?completed=true
+GET {{endpoint}}/toons/owned?completed=false&page=1
 Cookie: accessToken={{accessToken}}
 
 ### 참여한 툰 리스트 조회
