@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { ToonsModule } from './toons/toons.module';
 import { SuggestionModule } from './suggestion/suggestion.module';
 import { AwsModule } from './aws/aws.module';
+import { TempService } from './temp/temp.service';
 
 @Module({
   imports: [
@@ -21,5 +22,6 @@ import { AwsModule } from './aws/aws.module';
     SuggestionModule,
     AwsModule,
   ],
+  providers: [TempService],
 })
 export class AppModule {}
