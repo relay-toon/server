@@ -21,6 +21,7 @@ describe('AuthController', () => {
           useValue: {
             login: jest.fn(),
             refresh: jest.fn(),
+            logout: jest.fn(),
           },
         },
       ],
@@ -131,6 +132,45 @@ describe('AuthController', () => {
         });
         expect(err).toBeInstanceOf(UnauthorizedException);
       }
+    });
+  });
+
+  describe('logout', () => {
+    it('쿠키를 삭제하고 로그아웃한다', async () => {
+      // given
+      const req = {
+        cookies: {
+          refreshToken: 'refreshToken',
+        },
+      } as unknown as JwtRequest;
+      const res = {
+        clearCookie: jest.fn(),
+        send: jest.fn(),
+      } as unknown as Response;
+
+      // when
+      await authController.logout(req, res);
+
+      // then
+      const cookieOptions = {
+        httpOnly: true,
+        secure: true,
+        domain: configService.get('COOKIE_DOMAIN'),
+      };
+      expect(res.clearCookie).toHaveBeenCalledTimes(3);
+      expect(res.clearCookie).toHaveBeenCalledWith(
+        'accessToken',
+        cookieOptions,
+      );
+      expect(res.clearCookie).toHaveBeenCalledWith(
+        'refreshToken',
+        cookieOptions,
+      );
+      expect(res.clearCookie).toHaveBeenCalledWith('isLoggedIn', {
+        ...cookieOptions,
+        httpOnly: false,
+      });
+      expect(authService.logout).toHaveBeenCalledWith('refreshToken');
     });
   });
 });
