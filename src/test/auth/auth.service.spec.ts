@@ -55,5 +55,23 @@ describe('AuthService', () => {
       // then
       expect(result).toEqual(user);
     });
+
+    it('유저가 존재하지 않을 때 유저를 생성하고 반환한다', async () => {
+      // given
+      const info: ProviderInfo = {
+        provider: 'kakao',
+        providerId: '1234',
+      };
+      usersService.getUserByProvider.mockResolvedValue(null);
+      const createdUser = { id: '1' };
+      usersService.createUser.mockResolvedValue(createdUser);
+
+      // when
+      const result = await authService.validateUser(info);
+
+      // then
+      expect(usersService.createUser).toHaveBeenCalledWith(info);
+      expect(result).toEqual(createdUser);
+    });
   });
 });
