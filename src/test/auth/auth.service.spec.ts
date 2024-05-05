@@ -98,5 +98,34 @@ describe('AuthService', () => {
       const decoded = jwtService.decode(accessToken);
       expect(decoded.userId).toEqual(userId);
     });
+
+    it('올바른 secret을 사용하여 검증할 수 있다', () => {
+      // given
+      const userId = '1';
+
+      // when
+      const accessToken = authService.generateAccessToken(userId);
+
+      // then
+      const decoded = jwtService.verify(accessToken, {
+        secret: configService.get('JWT_SECRET'),
+      });
+      expect(decoded.userId).toEqual(userId);
+    });
+
+    it('올바르지 않은 secret을 사용하여 검증할 경우 에러가 발생한다', () => {
+      // given
+      const userId = '1';
+
+      // when
+      const accessToken = authService.generateAccessToken(userId);
+
+      // then
+      expect(() => {
+        jwtService.verify(accessToken, {
+          secret: 'wrong-secret',
+        });
+      }).toThrow();
+    });
   });
 });
