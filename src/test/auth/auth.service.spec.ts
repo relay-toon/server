@@ -1,7 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from 'src/auth/auth.service';
 import { UsersService } from 'src/users/users.service';
+import { JwtModule } from '@nestjs/jwt';
 import { JwtService } from '@nestjs/jwt';
+import { ConfigModule } from '@nestjs/config';
 import { ConfigService } from '@nestjs/config';
 import { ProviderInfo } from 'src/users/types';
 
@@ -15,8 +17,6 @@ describe('AuthService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AuthService,
-        JwtService,
-        ConfigService,
         {
           provide: UsersService,
           useValue: {
@@ -25,6 +25,17 @@ describe('AuthService', () => {
             setRefreshToken: jest.fn(),
           },
         },
+      ],
+      imports: [
+        ConfigModule,
+        JwtModule.registerAsync({
+          imports: [ConfigModule],
+          useFactory: async (configService: ConfigService) => ({
+            secret: configService.get<string>('JWT_SECRET'),
+            signOptions: { expiresIn: configService.get<string>('JWT_EXPIRE') },
+          }),
+          inject: [ConfigService],
+        }),
       ],
     }).compile();
     authService = module.get<AuthService>(AuthService);
@@ -72,6 +83,20 @@ describe('AuthService', () => {
       // then
       expect(usersService.createUser).toHaveBeenCalledWith(info);
       expect(result).toEqual(createdUser);
+    });
+  });
+
+  describe('generateAccessToken', () => {
+    it('유저 아이디를 받아서 액세스 토큰을 생성한다', () => {
+      // given
+      const userId = '1';
+
+      // when
+      const accessToken = authService.generateAccessToken(userId);
+
+      // then
+      const decoded = jwtService.decode(accessToken);
+      expect(decoded.userId).toEqual(userId);
     });
   });
 });
