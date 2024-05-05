@@ -13,7 +13,7 @@ describe('AuthService', () => {
   let jwtService: JwtService;
   let configService: ConfigService;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AuthService,
@@ -218,6 +218,42 @@ describe('AuthService', () => {
       // then
       const decoded = jwtService.decode(result);
       expect(decoded.userId).toEqual('1');
+    });
+  });
+
+  describe('logout', () => {
+    it('refreshToken이 없으면 아무 동작도 하지 않는다', async () => {
+      // given
+      const refreshToken = undefined;
+
+      // when
+      await authService.logout(refreshToken);
+
+      // then
+      expect(usersService.setRefreshToken).not.toHaveBeenCalled();
+    });
+
+    it('refreshToken이 유효하지 않으면 아무 동작도 하지 않는다', async () => {
+      // given
+      const refreshToken = 'invalid-token';
+
+      // when
+      await authService.logout(refreshToken);
+
+      // then
+      expect(usersService.setRefreshToken).not.toHaveBeenCalled();
+    });
+
+    it('refreshToken이 유효하면 데이터베이스에서 삭제한다', async () => {
+      // given
+      const refreshToken = 'valid-token';
+      jwtService.verify = jest.fn().mockReturnValue({ userId: '1' });
+
+      // when
+      await authService.logout(refreshToken);
+
+      // then
+      expect(usersService.setRefreshToken).toHaveBeenCalledWith('1', null);
     });
   });
 });
