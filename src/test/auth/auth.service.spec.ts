@@ -128,4 +128,42 @@ describe('AuthService', () => {
       }).toThrow();
     });
   });
+
+  describe('generateRefreshToken', () => {
+    it('유저 아이디를 받아서 리프레시 토큰을 생성하고 저장한다', async () => {
+      // given
+      const userId = '1';
+
+      // when
+      const refreshToken = await authService.generateRefreshToken(userId);
+
+      // then
+      const savedToken = jwtService.decode(refreshToken);
+      expect(savedToken.userId).toEqual(userId);
+      expect(usersService.setRefreshToken).toHaveBeenCalledWith(
+        userId,
+        refreshToken,
+      );
+    });
+
+    it('refreshToken은 accessToken과 다른 secret을 사용한다', async () => {
+      // given
+      const userId = '1';
+
+      // when
+      const refreshToken = await authService.generateRefreshToken(userId);
+
+      // then
+      const decoded = jwtService.verify(refreshToken, {
+        secret: configService.get('JWT_REFRESH_SECRET'),
+      });
+      expect(decoded.userId).toEqual(userId);
+
+      expect(() => {
+        jwtService.verify(refreshToken, {
+          secret: configService.get('JWT_SECRET'),
+        });
+      }).toThrow();
+    });
+  });
 });
