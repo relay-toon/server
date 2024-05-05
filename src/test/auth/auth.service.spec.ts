@@ -23,6 +23,7 @@ describe('AuthService', () => {
             getUserByProvider: jest.fn(),
             createUser: jest.fn(),
             setRefreshToken: jest.fn(),
+            getRefreshToken: jest.fn(),
           },
         },
       ],
@@ -164,6 +165,59 @@ describe('AuthService', () => {
           secret: configService.get('JWT_SECRET'),
         });
       }).toThrow();
+    });
+  });
+
+  describe('refresh', () => {
+    it('유효하지 않은 refreshToken을 받으면 에러를 던진다', async () => {
+      // given
+      const refreshToken = 'invalid-token';
+
+      // when
+      const result = authService.refresh(refreshToken);
+
+      // then
+      await expect(result).rejects.toThrow('Unauthorized');
+    });
+
+    it('데이터베이스에 refreshToken이 없으면 에러를 던진다', async () => {
+      // given
+      const refreshToken = 'valid-token';
+      jwtService.verify = jest.fn().mockReturnValue({ userId: '1' });
+      usersService.getRefreshToken.mockResolvedValue(null);
+
+      // when
+      const result = authService.refresh(refreshToken);
+
+      // then
+      await expect(result).rejects.toThrow('Unauthorized');
+    });
+
+    it('데이터베이스에 저장된 refreshToken과 일치하지 않으면 에러를 던진다', async () => {
+      // given
+      const refreshToken = 'v1';
+      jwtService.verify = jest.fn().mockReturnValue({ userId: '1' });
+      usersService.getRefreshToken.mockResolvedValue('v2');
+
+      // when
+      const result = authService.refresh(refreshToken);
+
+      // then
+      await expect(result).rejects.toThrow('Unauthorized');
+    });
+
+    it('새로운 accessToken을 생성하여 반환한다', async () => {
+      // given
+      const refreshToken = 'valid-token';
+      jwtService.verify = jest.fn().mockReturnValue({ userId: '1' });
+      usersService.getRefreshToken.mockResolvedValue(refreshToken);
+
+      // when
+      const result = await authService.refresh(refreshToken);
+
+      // then
+      const decoded = jwtService.decode(result);
+      expect(decoded.userId).toEqual('1');
     });
   });
 });
