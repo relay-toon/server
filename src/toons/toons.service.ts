@@ -47,7 +47,7 @@ export class ToonsService {
     image: Express.Multer.File,
   ) {
     const key = `toons/${toonId}.png`;
-    this.awsService.uploadImage(key, image);
+    await this.awsService.uploadImage(key, image);
     const imageUrl = `${this.configService.get('AWS_S3_URL')}/toons/${toonId}.png`;
     return this.toonsRepository.drawToon(toonId, drawToonDto, imageUrl);
   }
