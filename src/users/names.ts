@@ -1,5 +1,4 @@
 export const adjectives = [
-  '기타를 잘 치는',
   '응큼한',
   '담배피는',
   '늦잠자는',
@@ -7,8 +6,6 @@ export const adjectives = [
   '코딩하는',
   '문란한',
   '양치하는',
-  '어디서 이상한 거 배워 온',
-  '소원을 들어주는',
 ];
 
 export const animals = [
