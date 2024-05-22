@@ -72,6 +72,10 @@ export class ToonsService {
   }
 
   async deleteToon(toonId: string) {
-    return this.toonsRepository.deleteToon(toonId);
+    const result = await this.toonsRepository.deleteToon(toonId);
+    if (result.image) {
+      await this.awsService.deleteImage(`toons/${toonId}.png`);
+    }
+    return;
   }
 }

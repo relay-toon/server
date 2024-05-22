@@ -128,6 +128,7 @@ export class ToonsController {
   @ApiOperation({ summary: '툰 삭제' })
   @ApiCookieAuth('accessToken')
   @Delete(':toonId')
+  @HttpCode(204)
   @UseGuards(JwtAuthGuard)
   async deleteToon(@Param('toonId') toonId: string) {
     return this.toonsService.deleteToon(toonId);

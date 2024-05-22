@@ -34,3 +34,7 @@ Cookie: accessToken={{accessToken}}
 ### 참여한 툰 리스트 조회
 GET {{endpoint}}/toons/participated?completed=true
 Cookie: accessToken={{accessToken}}
+
+### 툰 삭제
+DELETE {{endpoint}}/toons/59446a63-76b7-46cf-a574-e4f63f351335
+Cookie: accessToken={{accessToken}}

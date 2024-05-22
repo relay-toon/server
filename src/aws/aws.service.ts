@@ -1,5 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import {
+  S3Client,
+  PutObjectCommand,
+  DeleteObjectCommand,
+} from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -15,6 +19,15 @@ export class AwsService {
         Bucket: this.configService.get('AWS_BUCKET_NAME'),
         Key: key,
         Body: file.buffer,
+      }),
+    );
+  }
+
+  async deleteImage(key: string) {
+    return this.s3Client.send(
+      new DeleteObjectCommand({
+        Bucket: this.configService.get('AWS_BUCKET_NAME'),
+        Key: key,
       }),
     );
   }
