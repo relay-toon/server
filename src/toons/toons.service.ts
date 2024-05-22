@@ -70,4 +70,8 @@ export class ToonsService {
       return this.toonsRepository.getParticipatedToons(userId, completed, page);
     }
   }
+
+  async deleteToon(toonId: string) {
+    return this.toonsRepository.deleteToon(toonId);
+  }
 }

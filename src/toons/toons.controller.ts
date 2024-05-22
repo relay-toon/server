@@ -5,6 +5,7 @@ import {
   Req,
   UseGuards,
   Get,
+  Delete,
   Param,
   HttpException,
   Put,
@@ -122,5 +123,13 @@ export class ToonsController {
   @Get(':toonId')
   async getToon(@Param('toonId') toonId: string) {
     return this.toonsService.getToon(toonId);
+  }
+
+  @ApiOperation({ summary: '툰 삭제' })
+  @ApiCookieAuth('accessToken')
+  @Delete(':toonId')
+  @UseGuards(JwtAuthGuard)
+  async deleteToon(@Param('toonId') toonId: string) {
+    return this.toonsService.deleteToon(toonId);
   }
 }

@@ -237,4 +237,12 @@ export class ToonsRepository {
       }),
     };
   }
+
+  async deleteToon(toonId: string) {
+    return this.prisma.toon.delete({
+      where: {
+        id: toonId,
+      },
+    });
+  }
 }

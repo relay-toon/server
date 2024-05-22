@@ -1,5 +1,5 @@
 @endpoint = http://localhost:8000
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwYzYwODc4Ni01MzFjLTQxNzYtOWJlZS04ODlkMGRkMzUwNGYiLCJpYXQiOjE3MTQ1NDUyNTMsImV4cCI6MTcxNTE1MDA1M30._wAG3retzFbvxbdfKKpZmliyXmHeI_0q6MA7hXcrckY
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3M2QyMTYyMS00MzhjLTQyMmUtOTY3NC1hMDBlODY2ZmM3YWQiLCJpYXQiOjE3MTYzNjc1NzMsImV4cCI6MTcxNjk3MjM3M30.0PtzcMCWQtM0RWc5fj9jHYKnJTCcoDQ7DDfuK9cEsq4
 
 
 ### 툰 생성
@@ -14,17 +14,17 @@ Content-Type: application/json
 }
 
 ### 툰 정보 조회
-GET {{endpoint}}/toons/b0350f1f-eeba-4ad3-bedc-0ad06e4042ed
+GET {{endpoint}}/toons/59446a63-76b7-46cf-a574-e4f63f351335
 
 ### 툰 락 획득
 GET {{endpoint}}/toons/5e407e9b-bb09-4b28-ab92-4fa2494f7271/lock
 
 ### 툰 그리기
-PUT {{endpoint}}/toons/5e407e9b-bb09-4b28-ab92-4fa2494f7271
+PUT {{endpoint}}/toons/59446a63-76b7-46cf-a574-e4f63f351335
 Content-Type: application/json
 
 {
-  "name": "name1",
+  "name": "name1"
 }
 
 ### 내가 만든 툰 리스트 조회
