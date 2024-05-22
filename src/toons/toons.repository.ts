@@ -29,6 +29,7 @@ export class ToonsRepository {
       include: {
         participants: {
           select: {
+            userId: true,
             name: true,
           },
         },
